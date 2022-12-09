@@ -10,14 +10,33 @@ export class Insertevidence extends Component {
       console.log(e);
       this.setState({evidenceId:e.target.value});
     }
-    handleChangeEvidenceDetails=(e)=>{
-      console.log(e);
-      this.setState({memory: e.target.value});
+
+    convertToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    };
+
+    handleChangeEvidenceDetails=async(e)=>{
+      console.log(e.target.files);
+      const file = e.target.files[0];
+      const base64 = await this.convertToBase64(file);
+      this.setState({memory: base64});
     }
+
+    
+
     insertEvidence = async () => {
         const {contract} = this.state;
         console.log(this.state.memory);
-        const response=await contract.methods.insertEvidence(this.state.caseId,this.state.docId,this.state.memory).send({ from: this.state.accounts[0] });
+        const response=await contract.methods.insertEvidence(this.state.caseId,this.state.evidenceId,this.state.memory).send({ from: this.state.accounts[0] });
         console.log(response);
         this.setState({message:response});
         this.state.contract.events.EvidenceCreated(function (err,results){
@@ -27,6 +46,7 @@ export class Insertevidence extends Component {
             console.log(results.returnValues.message);
         })
       };
+
     render(){
     return (
         <div>
@@ -37,7 +57,9 @@ export class Insertevidence extends Component {
         <label htmlFor="evidenceId">Enter Evidence ID:</label>
         <input type="number" name="evidenceId" id="evidenceId"  defaultValue={this.state!==null? this.state.evidenceId:0} onChange={this.handleChangeEvidence}/>
         <br />
-        <input type="text" name="evidence" id="evidence" defaultValue={this.state!==null? this.state.memory:""} onChange={this.handleChangeEvidenceDetails}/>
+        
+        <label htmlFor="evidenceId">Upload Evidence:</label>
+        <input type="file" name="evidence" id="evidence" accept=".jpeg, .png, .jpg" onChange={this.handleChangeEvidenceDetails}/>
         <br />
         <button onClick={()=>this.insertEvidence()}>Click Here</button>
 
