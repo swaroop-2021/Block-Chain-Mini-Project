@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Evidence from "./contracts/Evidence.json";
+import User from "./contracts/userStorage.json";
 import getWeb3 from "./getWeb3";
 
 import { Link } from 'react-router-dom'
@@ -25,6 +26,7 @@ class App extends Component {
       const deployedNetwork = Evidence.networks[networkId];
       const instance = new web3.eth.Contract(
         Evidence.abi,
+        // User.abi,
         deployedNetwork && deployedNetwork.address,
         );
         

@@ -26,13 +26,27 @@ export class Getcase extends Component {
 
           <br /><br /><br /><br />
 
-          {this.state!==null && this.state.message!==null?
+          {this.state!==null && this.state.message.length!==0?
           (
-            <div>The stored value is: <p>{this.state.message[0]}</p>
-            <p>{this.state.message[1]}</p>
-            <p>{this.state.message[2]}</p></div>
+            <>
+            <div>
+              <h2>Case ID:{this.state.message[1]}</h2>
+              {this.state.message[2].map((element=>(
+              <>
+
+                <br />
+                <h3>Document ID:{element[0]}</h3>
+                <br />
+                <img alt="hello" src={element[1]}/>
+                <br />
+              </>
+              )))}
+              
+            </div>
+
+            </>
           ):
-          (<p>No response</p>)}
+          (<></>)}
 
         </div>
     )

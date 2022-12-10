@@ -3,11 +3,11 @@ import React,{Component} from 'react';
 export class Insertevidence extends Component {
     state={...this.props}.state;
     handleChangeCase=(e)=>{
-        console.log(e);
+        console.log(e.targer.value);
         this.setState({caseId:e.target.value});
     }
     handleChangeEvidence=(e)=>{
-      console.log(e);
+      console.log(e.targer.value);
       this.setState({evidenceId:e.target.value});
     }
 
@@ -28,6 +28,7 @@ export class Insertevidence extends Component {
       console.log(e.target.files);
       const file = e.target.files[0];
       const base64 = await this.convertToBase64(file);
+      console.log(base64);
       this.setState({memory: base64});
     }
 
@@ -76,7 +77,7 @@ export class Insertevidence extends Component {
                 </div> */}
             {/* </div> */}
           {/* ) } */}
-          <p>No response {this.message}</p>
+          {/* <p>No response {this.message}</p> */}
         </div>
     )
     }

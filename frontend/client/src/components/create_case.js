@@ -13,12 +13,13 @@ export class Createcase extends Component {
         const response=await contract.methods.createCase().send({ from: this.state.accounts[0] });
         this.setState({message:response});
         console.log(response);
-        this.state.contract.events.CaseCreated(function (err,results){
-          if(err)
-            console.log(err);
-          else
-            console.log(results.returnValues.message);
-        })
+        console.log(response.events.CaseCreated.returnValues.message);
+        // this.state.contract.events.CaseCreated(function (err,results){
+        //   if(err)
+        //     console.log(err);
+        //   else
+        //     console.log(results.returnValues.message);
+        // })
       };
     render(){
     return (
@@ -47,7 +48,11 @@ export class Createcase extends Component {
                 </div> */}
             </div>
           ):
-          (<p>No response</p>)} 
+          (
+            <p>
+              
+            </p>
+          )} 
         </div>
     )
     }

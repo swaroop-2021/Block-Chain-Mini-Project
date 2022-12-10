@@ -35,12 +35,50 @@ export class Getevidence extends Component {
           <br /><br /><br /><br />
 
           {this.state!==null && this.state.message!==null?
-          (
-            <div>The stored value is: <p>{this.state.message[0]}</p>
-            <p>{this.state.message[1]}</p>
-            <p>{this.state.message[2]}</p></div>
-          ):
-          (<p>No response</p>)}
+            (
+              <>
+              
+                {this.state.message[2]==="CaseID doesn't Exist"?
+
+                  <>
+                    <p>Case ID doesn't Exist</p>
+                  </>
+
+                  :
+
+                  <>
+
+                    {this.state.message[2]==="DocID doesn't Exist"?
+                    <>
+                      <p>Document ID doesn't Exist</p>
+                    </>
+                    :
+                    <>
+                      {
+                        this.state.message.length!==0? 
+                        <>
+                          <p>Case ID: {this.state.message[0]}</p>
+                          <p>Document ID: {this.state.message[1]}</p>
+                          <img alt="images" src={this.state.message[2]}/>
+                        </> 
+                        : 
+                        
+                        <>
+                          
+                        </>
+                        }
+                    </>
+                    }
+                  </>
+                  }
+
+              </>
+            )
+            :
+            (
+              <p>No response</p>
+            )
+          }
 
         </div>
     )
