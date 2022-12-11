@@ -13,6 +13,8 @@ import { Insertevidence } from "./components/insert_evidence";
 import "./App.css";
 import { Login } from "./components/login";
 import { Register } from "./components/register";
+import { Logout } from "./components/logout";
+import { TransferCase } from "./components/transfer_case";
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null ,caseId:1 , message:[] , memory: "" , evidenceId:1,flag:false,userId:0};
@@ -99,10 +101,12 @@ class App extends Component {
             {this.state.flag===true?  
             
             <nav>
-                <Link className="route" to={'/Createcase'}  >Createcase</Link>
+                <Link className="route" to={'/CreateCase'}  >CreateCase</Link>
                 <Link className="route" to={'/Getcase'} >Getcase</Link>
                 <Link className="route" to={'/Getevidence'} >Getevidence</Link>
                 <Link className="route" to={'/Insertevidence'} >Insertevidence</Link>
+                <Link className="route" to={'/TransferCase'} >TransferCase</Link>
+                <Link className="route" to={'/Logout'}>Logout</Link>
             </nav>
 
             :  
@@ -118,11 +122,13 @@ class App extends Component {
               
             <Routes>
                 {/* <Route path='/' element={<App state={this.state}/>} /> */}
-                <Route path='Createcase' element={<Createcase state={this.state}/>} />
+                <Route path='CreateCase' element={<Createcase state={this.state}/>} />
                 <Route path='Getcase' element={<Getcase state={this.state}/>} />
                 <Route path='Getevidence' element={<Getevidence state={this.state}/>} />
                 <Route path='Insertevidence' element={<Insertevidence state={this.state}/>} />
+                <Route path='TransferCase' element={<TransferCase state={this.state}/>} />
                 <Route path='Login' element={<Login state={this.state}/>} />
+                <Route path='Logout' element={<Logout state={this.state}/>} />
                 <Route path='Register' element={<Register state={this.state}/>} />
             </Routes>
         </BrowserRouter>

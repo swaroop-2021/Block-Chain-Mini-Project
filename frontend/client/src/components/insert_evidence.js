@@ -3,11 +3,11 @@ import React,{Component} from 'react';
 export class Insertevidence extends Component {
     state={...this.props}.state;
     handleChangeCase=(e)=>{
-        console.log(e.targer.value);
+        console.log(e.target.value);
         this.setState({caseId:e.target.value});
     }
     handleChangeEvidence=(e)=>{
-      console.log(e.targer.value);
+      console.log(e.target.value);
       this.setState({evidenceId:e.target.value});
     }
 

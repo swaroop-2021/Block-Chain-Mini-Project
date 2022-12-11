@@ -2,6 +2,7 @@
 pragma solidity >=0.4.21 <=0.9.0;
 pragma experimental ABIEncoderV2;
 
+
 contract userStorage {
     struct User {
         uint256 id;
@@ -122,6 +123,7 @@ contract userStorage {
                     if (_receiverId > 0 && users[_receiverId].id == _receiverId) {
                         if (_caseId > 0) {
                             users[_receiverId].onChainCases.push(_caseId);
+                            emit appendChain("You are in authenticated network");
                             return;
                         } else {
                             emit appendChain("Case ID is invalid");
@@ -146,11 +148,15 @@ contract userStorage {
         if (_id > 0 && users[_id].id == _id) {
             if (_caseId > 0) {
                 users[_id].createdCases.push(_caseId);
+                users[_id].ownershipCases.push(_caseId);
+                users[_id].onChainCases.push(_caseId);
                 emit createCaseInfo("Case added to account");
                 appendIntoChain(_id, _id, _caseId);
             }
         }
     }
+
+    event transferOwnerShipInfo(string message);
 
     function transferOwnerShip(uint256 _senderId,uint256 _receiverId,uint256 _caseId
     ) public {
@@ -162,21 +168,21 @@ contract userStorage {
                             users[_receiverId].ownershipCases.push(_caseId);
                             users[_senderId].ownershipCases[i] = users[_senderId].ownershipCases[users[_senderId].ownershipCases.length - 1];
                             users[_senderId].ownershipCases.pop();
-                            emit appendChain("You are in authenticated network");
+                            emit transferOwnerShipInfo("OwnerShip Transferred");
                             return;
                         } else {
-                            emit appendChain("Case ID is invalid");
+                            emit transferOwnerShipInfo("Case ID is invalid");
                             return;
                         }
                     } else {
-                        emit appendChain("User ID is invalid");
+                        emit transferOwnerShipInfo("User ID is invalid");
                         return;
                     }
                 }
             }
-            emit appendChain("No ownership");
+            emit transferOwnerShipInfo("No ownership");
         } else {
-            emit appendChain("Owner ID is Invalid");
+            emit transferOwnerShipInfo("Owner ID is Invalid");
         }
     }
 

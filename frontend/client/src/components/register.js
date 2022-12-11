@@ -8,7 +8,8 @@ export class Register extends Component {
         password:"",
         name:"",
         age:0,
-        role:""
+        role:"",
+        authMessage:""
     };
     
 
@@ -31,11 +32,12 @@ export class Register extends Component {
     submitDetails=async(event)=>{
         event.preventDefault();
         console.log(this.state);
-        // const response = await this.state.contract[1].methods.register(this.state.name,this.state.role,this.state.age,this.state.email,this.state.password).send({ from: this.state.accounts[0] });
-        const response = await this.state.contract[1].methods.getUserDetails(1).call();
+        const response = await this.state.contract[1].methods.register(this.state.name,this.state.role,this.state.age,this.state.password,this.state.email).send({ from: this.state.accounts[0] });
+        // const response = await this.state.contract[1].methods.getUserDetails(1).call();
         console.log(response);
-        // // Update state with the result.
-        this.setState({ message: response});
+        this.setState({ authMessage: `${response.events.createUser.returnValues.message}\n User ID:${response.events.createUser.returnValues[1]}`});
+        console.log(response.events.createUser.returnValues.message,response.events.createUser.returnValues[1]);
+
     }
 
 
@@ -60,6 +62,7 @@ export class Register extends Component {
                 <br />
                 <input type="submit" value="submit" id='submit' name="submit" />
                 <br />
+                <h4>{this.state.authMessage}</h4>
             </form>
         )
     }

@@ -10,10 +10,14 @@ export class Createcase extends Component {
     createCase = async () => {
         const {contract} = this.state;
     
-        const response=await contract[0].methods.createCase().send({ from: this.state.accounts[0] });
-        this.setState({message:response});
-        console.log(response);
-        console.log(response.events.CaseCreated.returnValues.message);
+        const response1=await contract[0].methods.createCase().send({ from: this.state.accounts[0] });
+
+        const response2=await contract[1].methods.createCase(Number(localStorage.getItem("user")[0]),response1.events.CaseCreated.returnValues[1]).send({ from: this.state.accounts[0] });
+
+        this.setState({message:response2});
+
+        // console.log(response1);
+        console.log(response2.events.createCaseInfo.returnValues.message);
         // this.state.contract.events.CaseCreated(function (err,results){
         //   if(err)
         //     console.log(err);

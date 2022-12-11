@@ -8627,10 +8627,16 @@
       "links": {},
       "address": "0xda469401Dd388C61a4d42A753FABc8e05c443670",
       "transactionHash": "0x5cc7c4733698f5358de43f801e206570da98438a0a63111143c08bde62a63b09"
+    },
+    "1670774023736": {
+      "events": {},
+      "links": {},
+      "address": "0x124eFC053bE3c26b7B4ed131466CACbBd6E39E4f",
+      "transactionHash": "0x67d509e63dd108ee12714395149a467dd9794a6a0181bc52664debaac02a9199"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2022-12-11T09:29:59.062Z",
+  "updatedAt": "2022-12-11T21:22:32.226Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
