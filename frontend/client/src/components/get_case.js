@@ -12,7 +12,7 @@ export class Getcase extends Component {
     runExample = async () => {
       const {contract} = this.state;
 
-      const response = await contract.methods.getCaseInfo(this.state.caseId).call();
+      const response = await contract[0].methods.getCaseInfo(this.state.caseId).call();
       console.log(response);
 
       this.setState({ message: response});
@@ -28,8 +28,16 @@ export class Getcase extends Component {
 
           {this.state!==null && this.state.message.length!==0?
           (
+            
             <>
-            <div>
+            {this.state.message[0]==="Invalid ID"?  
+            
+            <>
+              <h3>Case ID doesn't Exist</h3>
+            </> 
+            : 
+            <>
+              <div>
               <h2>Case ID:{this.state.message[1]}</h2>
               {this.state.message[2].map((element=>(
               <>
@@ -43,6 +51,9 @@ export class Getcase extends Component {
               )))}
               
             </div>
+            </>
+            }
+            
 
             </>
           ):

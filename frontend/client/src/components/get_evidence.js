@@ -17,7 +17,7 @@ export class Getevidence extends Component {
     getEvidence = async () => {
       const {contract} = this.state;
 
-      const response = await contract.methods.getEvidenceInfo(this.state.caseId,this.state.evidenceId).call();
+      const response = await contract[0].methods.getEvidenceInfo(this.state.caseId,this.state.evidenceId).call();
       console.log(response);
 
       this.setState({ message: response});

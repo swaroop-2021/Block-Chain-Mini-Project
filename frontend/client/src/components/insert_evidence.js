@@ -37,10 +37,10 @@ export class Insertevidence extends Component {
     insertEvidence = async () => {
         const {contract} = this.state;
         console.log(this.state.memory);
-        const response=await contract.methods.insertEvidence(this.state.caseId,this.state.evidenceId,this.state.memory).send({ from: this.state.accounts[0] });
+        const response=await contract[0].methods.insertEvidence(this.state.caseId,this.state.evidenceId,this.state.memory).send({ from: this.state.accounts[0] });
         console.log(response);
         this.setState({message:response});
-        this.state.contract.events.EvidenceCreated(function (err,results){
+        this.state.contract[0].events.EvidenceCreated(function (err,results){
           if(err)
             console.log(err);
           else

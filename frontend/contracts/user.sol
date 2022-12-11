@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.4.21 <=0.9.0;
+pragma experimental ABIEncoderV2;
 
 contract userStorage {
     struct User {
@@ -19,43 +20,28 @@ contract userStorage {
 
     event createUser(string message, uint256);
 
-    function create(
-        string memory _name,
-        string memory _job,
-        uint256 _age,
-        string memory _password,
-        string memory _email
-    ) public {
+    function register(string memory _name,string memory _role,uint256 _age,string memory _password,string memory _email) public {
         uint256[] memory array1;
         noOfUsers++;
-        users[noOfUsers] = User(
-            noOfUsers,
-            _name,
-            _job,
-            _age,
-            _password,
-            _email,
-            array1,
-            array1,
-            array1
-        );
+        users[noOfUsers].id=noOfUsers;
+        users[noOfUsers].name=_name;
+        users[noOfUsers].role=_role;
+        users[noOfUsers].age=_age;
+        users[noOfUsers].password=_password;
+        users[noOfUsers].email=_email;
+        users[noOfUsers].createdCases=array1;
+        users[noOfUsers].onChainCases=array1;
+        users[noOfUsers].ownershipCases=array1;
         emit createUser("User Created", noOfUsers);
     }
 
-    function login(
-        uint256 _id,
-        string memory _email,
-        string memory _password
-    ) public view returns (string memory) {
+    function login(uint256 _id,string memory _email,string memory _password) public view returns (string memory) {
         if (_id > 0 && users[_id].id == _id) {
             if (bytes(_email).length != bytes(users[_id].email).length) {
                 return ("Invalid Email");
             }
 
-            if (
-                keccak256(abi.encodePacked(_email)) !=
-                keccak256(abi.encodePacked(users[_id].email))
-            ) {
+            if (uint(keccak256(abi.encodePacked(_email))) != uint(keccak256(abi.encodePacked(users[_id].email)))) {
                 return ("Invalid Email");
             }
 
@@ -63,10 +49,7 @@ contract userStorage {
                 return ("Invalid Password");
             }
 
-            if (
-                keccak256(abi.encodePacked(_password)) !=
-                keccak256(abi.encodePacked(users[_id].password))
-            ) {
+            if (uint(keccak256(abi.encodePacked(_password))) != uint(keccak256(abi.encodePacked(users[_id].password)))) {
                 return ("Invalid Password");
             }
 
@@ -80,56 +63,48 @@ contract userStorage {
         return (users[_id]);
     }
 
-    function readName(uint256 _id) public view returns (string memory) {
-        if (_id > 0 && users[_id].id == _id) {
-            return (users[_id].name);
-        } else {
-            return ("null");
-        }
-    }
+    // function readName(uint256 _id) public view returns (string memory) {
+    //     if (_id > 0 && users[_id].id == _id) {
+    //         return (users[_id].name);
+    //     } else {
+    //         return ("null");
+    //     }
+    // }
 
-    function readJob(uint256 _id) public view returns (string memory) {
-        if (_id > 0 && users[_id].id == _id) {
-            return (users[_id].role);
-        } else {
-            return ("null");
-        }
-    }
+    // function readJob(uint256 _id) public view returns (string memory) {
+    //     if (_id > 0 && users[_id].id == _id) {
+    //         return (users[_id].role);
+    //     } else {
+    //         return ("null");
+    //     }
+    // }
 
-    function readAge(uint256 _id) public view returns (uint256) {
-        if (_id > 0 && users[_id].id == _id) {
-            return (users[_id].age);
-        } else {
-            // return ("null");
-            return (0);
-        }
-    }
+    // function readAge(uint256 _id) public view returns (uint256) {
+    //     if (_id > 0 && users[_id].id == _id) {
+    //         return (users[_id].age);
+    //     } else {
+    //         // return ("null");
+    //         return (0);
+    //     }
+    // }
 
-    function readEmail(uint256 _id) public view returns (string memory) {
-        if (_id > 0 && users[_id].id == _id) {
-            return (users[_id].email);
-        } else {
-            return ("null");
-        }
-    }
+    // function readEmail(uint256 _id) public view returns (string memory) {
+    //     if (_id > 0 && users[_id].id == _id) {
+    //         return (users[_id].email);
+    //     } else {
+    //         return ("null");
+    //     }
+    // }
 
     event appendChain(string message);
-    function appendIntoChain(
-        uint256 _senderId,
-        uint256 _receiverId,
-        uint256 _caseId
-    ) public {
+    function appendIntoChain(uint256 _senderId,uint256 _receiverId,uint256 _caseId) public {
         if (_senderId > 0 && users[_senderId].id == _senderId) {
             for (uint256 i = 0; i < users[_senderId].createdCases.length; i++) {
                 if (users[_senderId].createdCases[i] == _caseId) {
-                    if (
-                        _receiverId > 0 && users[_receiverId].id == _receiverId
-                    ) {
+                    if (_receiverId > 0 && users[_receiverId].id == _receiverId) {
                         if (_caseId > 0) {
                             users[_receiverId].onChainCases.push(_caseId);
-                            emit appendChain(
-                                "You are in authenticated network"
-                            );
+                            emit appendChain("You are in authenticated network");
                             return;
                         } else {
                             emit appendChain("Case ID is invalid");
@@ -142,15 +117,9 @@ contract userStorage {
                 }
             }
 
-            for (
-                uint256 i = 0;
-                i < users[_senderId].ownershipCases.length;
-                i++
-            ) {
+            for (uint256 i = 0;i < users[_senderId].ownershipCases.length;i++) {
                 if (users[_senderId].ownershipCases[i] == _caseId) {
-                    if (
-                        _receiverId > 0 && users[_receiverId].id == _receiverId
-                    ) {
+                    if (_receiverId > 0 && users[_receiverId].id == _receiverId) {
                         if (_caseId > 0) {
                             users[_receiverId].onChainCases.push(_caseId);
                             return;
@@ -182,32 +151,18 @@ contract userStorage {
             }
         }
     }
-    function transferOwnerShip(
-        uint256 _senderId,
-        uint256 _receiverId,
-        uint256 _caseId
+
+    function transferOwnerShip(uint256 _senderId,uint256 _receiverId,uint256 _caseId
     ) public {
         if (_senderId > 0 && users[_senderId].id == _senderId) {
-            for (
-                uint256 i = 0;
-                i < users[_senderId].ownershipCases.length;
-                i++
-            ) {
+            for (uint256 i = 0;i < users[_senderId].ownershipCases.length;i++) {
                 if (users[_senderId].ownershipCases[i] == _caseId) {
-                    if (
-                        _receiverId > 0 && users[_receiverId].id == _receiverId
-                    ) {
+                    if (_receiverId > 0 && users[_receiverId].id == _receiverId) {
                         if (_caseId > 0) {
                             users[_receiverId].ownershipCases.push(_caseId);
-                            users[_senderId].ownershipCases[i] = users[
-                                _senderId
-                            ].ownershipCases[
-                                    users[_senderId].ownershipCases.length - 1
-                                ];
+                            users[_senderId].ownershipCases[i] = users[_senderId].ownershipCases[users[_senderId].ownershipCases.length - 1];
                             users[_senderId].ownershipCases.pop();
-                            emit appendChain(
-                                "You are in authenticated network"
-                            );
+                            emit appendChain("You are in authenticated network");
                             return;
                         } else {
                             emit appendChain("Case ID is invalid");
@@ -225,36 +180,36 @@ contract userStorage {
         }
     }
 
-    function updateName(uint256 _id, string memory _name) public {
-        users[_id - 1].name = _name;
-    }
+    // function updateName(uint256 _id, string memory _name) public {
+    //     users[_id - 1].name = _name;
+    // }
 
-    function updateJob(uint256 _id, string memory _job) public {
-        users[_id - 1].role = _job;
-    }
+    // function updateJob(uint256 _id, string memory _job) public {
+    //     users[_id - 1].role = _job;
+    // }
 
-    function updateAge(uint256 _id, uint256 _age) public {
-        users[_id - 1].age = _age;
-    }
+    // function updateAge(uint256 _id, uint256 _age) public {
+    //     users[_id - 1].age = _age;
+    // }
 
-    function updateEmail(uint256 _id, string memory _email) public {
-        users[_id - 1].name = _email;
-    }
+    // function updateEmail(uint256 _id, string memory _email) public {
+    //     users[_id - 1].name = _email;
+    // }
 
-    function updateAllInfo(
-        uint256 _id,
-        string memory _name,
-        string memory _job,
-        uint256 _age,
-        string memory _email
-    ) public {
-        users[_id - 1].name = _name;
-        users[_id - 1].role = _job;
-        users[_id - 1].age = _age;
-        users[_id - 1].email = _email;
-    }
+    // function updateAllInfo(
+    //     uint256 _id,
+    //     string memory _name,
+    //     string memory _job,
+    //     uint256 _age,
+    //     string memory _email
+    // ) public {
+    //     users[_id - 1].name = _name;
+    //     users[_id - 1].role = _job;
+    //     users[_id - 1].age = _age;
+    //     users[_id - 1].email = _email;
+    // }
 
-    function remove(uint256 _id) public {
-        delete users[_id - 1];
-    }
+    // function remove(uint256 _id) public {
+    //     delete users[_id - 1];
+    // }
 }
