@@ -48,37 +48,37 @@ export class Insertevidence extends Component {
         })
       };
 
-    render(){
-    return (
-        <div>
-        <h1>Insert Evidence</h1>
-        <label htmlFor="caseId">Enter Case ID:</label>
-        <input type="number" name="caseId" id="caseId"  defaultValue={this.state!==null? this.state.caseId:0} onChange={this.handleChangeCase}/>
-        <br />
-        <label htmlFor="evidenceId">Enter Evidence ID:</label>
-        <input type="number" name="evidenceId" id="evidenceId"  defaultValue={this.state!==null? this.state.evidenceId:0} onChange={this.handleChangeEvidence}/>
-        <br />
-        
-        <label htmlFor="evidenceId">Upload Evidence:</label>
-        <input type="file" name="evidence" id="evidence" accept=".jpeg, .png, .jpg" onChange={this.handleChangeEvidenceDetails}/>
-        <br />
-        <button onClick={()=>this.insertEvidence()}>Click Here</button>
-
-          <br /><br /><br /><br />
-
-           {/* {Object.keys(this.state.message).length!==0? */}
-          {/* //  &&  Object.keys(this.state.message).length!==0 && Object.keys(this.state.message).length!==3? */}
-          {/* (
+      render(){
+        return (
             <div>
-                <h1>Evidence Inserted</h1> 
-                {/* <div>{Object.keys(this.state.contract.events.CaseCreated()).map((item, i) => (
-                    <div key={i}>{item} : {Object.values(this.state.contract.events.CaseCreated())[i]}</div>
-                ))}
-                </div> */}
-            {/* </div> */}
-          {/* ) } */}
-          {/* <p>No response {this.message}</p> */}
-        </div>
-    )
-    }
+            <h1>Insert Evidence</h1>
+            <label htmlFor="caseId">Enter Case ID:</label>
+            <input required min="1" type="number" name="caseId" id="caseId"  defaultValue={this.state!==null? this.state.caseId:0} onChange={this.handleChangeCase}/>
+            <br />
+            <label htmlFor="evidenceId">Enter Evidence ID:</label>
+            <input required min="1" type="number" name="evidenceId" id="evidenceId"  defaultValue={this.state!==null? this.state.evidenceId:0} onChange={this.handleChangeEvidence}/>
+            <br />
+            
+            <label htmlFor="evidence">Upload Evidence:</label>
+            <input required type="file" name="evidence" id="evidence" accept=".jpeg, .png, .jpg" onChange={this.handleChangeEvidenceDetails}/>
+            <br />
+            <button onClick={()=>this.insertEvidence()}>Click Here</button>
+    
+              <br /><br /><br /><br />
+    
+               {/* {Object.keys(this.state.message).length!==0? */}
+              {/* //  &&  Object.keys(this.state.message).length!==0 && Object.keys(this.state.message).length!==3? */}
+              {/* (
+                <div>
+                    <h1>Evidence Inserted</h1> 
+                    {/* <div>{Object.keys(this.state.contract.events.CaseCreated()).map((item, i) => (
+                        <div key={i}>{item} : {Object.values(this.state.contract.events.CaseCreated())[i]}</div>
+                    ))}
+                    </div> */}
+                {/* </div> */}
+              {/* ) } */}
+              {/* <p>No response {this.message}</p> */}
+            </div>
+        )
+        }
 }

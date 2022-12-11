@@ -46,23 +46,31 @@ export class Register extends Component {
             <form onSubmit={this.submitDetails}>
                 <br />
                 <label htmlFor="name">Name: </label>
-                <input type="name" name="name" id="name" onChange={this.handleNameInputChange}/>
+                <input required  minlength="2" maxlength="20" size="10" type="name" name="name" id="name" onChange={this.handleNameInputChange}/>
                 <br />
                 <label htmlFor="email">Email: </label>
-                <input type="email" name="email" id="email" onChange={this.handleEmailInputChange}/>
+                <input required type="email" name="email" id="email" onChange={this.handleEmailInputChange}/>
                 <br />
                 <label htmlFor="role">Role: </label>
-                <input type="role" name="role" id="role" onChange={this.handleRoleInputChange}/>
+                <input required type="text" name="role" id="role" onChange={this.handleRoleInputChange}/>
                 <br />
                 <label htmlFor="age">Age: </label>
-                <input type="number" name="age" id="age" onChange={this.handleAgeInputChange}/>
+                <input required min="20" max="70" type="number" name="age" id="age" onChange={this.handleAgeInputChange}/>
                 <br />
                 <label htmlFor="password">Password: </label>
-                <input type="password" name="password" id="password" onChange={this.handlePasswordInputChange}/>
+                <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required type="password" name="password" id="password" onChange={this.handlePasswordInputChange}/>
                 <br />
                 <input type="submit" value="submit" id='submit' name="submit" />
                 <br />
-                <h4>{this.state.authMessage}</h4>
+
+                <div id="message">
+                <h3>Password must contain the following:</h3>
+                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                <p id="number" class="invalid">A <b>number</b></p>
+                <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                </div>
+
             </form>
         )
     }
