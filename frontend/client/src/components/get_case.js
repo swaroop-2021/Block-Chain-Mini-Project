@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
 
 export class Getcase extends Component {
-    state={...this.props}.state;
+    state={
+      ...this.props.state,
+      authMessage:""
+    };
     
     handleChange=(e)=>{
         console.log(e.target.value);
@@ -9,13 +12,23 @@ export class Getcase extends Component {
         // this.forceUpdate();
     }
 
-    runExample = async () => {
+    runExample = async (event) => {
+      this.setState({message:[],authMessage:""});
+      event.preventDefault();
       const {contract} = this.state;
 
-      const response = await contract[0].methods.getCaseInfo(this.state.caseId).call();
-      console.log(response);
+      const onChainCases=await contract[1].methods.getOnChainCases(Number(localStorage.getItem("user")[0])).call();
+      console.log(onChainCases);
+      if(onChainCases.includes(this.state.caseId)===true){
+        const response = await contract[0].methods.getCaseInfo(this.state.caseId).call();
+        console.log(response);
+        this.setState({ message: response});
+      }
+      else{
+        console.log("You are not in this Network");
+        this.setState({ authMessage:"You are not in this Network" });
+      }
 
-      this.setState({ message: response});
     };
     render(){return (
       <div>
@@ -29,8 +42,8 @@ export class Getcase extends Component {
 
         {this.state!==null && this.state.message.length!==0?
         (
-          
           <>
+          
           {this.state.message[0]==="Invalid ID"?  
           
           <>
@@ -40,7 +53,7 @@ export class Getcase extends Component {
           <>
             <div>
             <h2>Case ID:{this.state.message[1]}</h2>
-            {this.state.message[2].map((element=>(
+            {this.state.message[3].map((element=>(
             <>
 
               <br />
@@ -51,14 +64,18 @@ export class Getcase extends Component {
             </>
             )))}
             
-          </div>
+            </div>
           </>
           }
-          
-
           </>
+        
+          
+        
         ):
-        (<></>)}
+        (<>
+          <h4>{this.state.authMessage}</h4>
+        </>)
+        }
 
       </div>
     )

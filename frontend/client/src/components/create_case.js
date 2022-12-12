@@ -1,19 +1,31 @@
 import React,{Component} from 'react';
 
 export class Createcase extends Component {
-    state={...this.props}.state;
+    state={
+          ...this.props.state,
+          description:""  
+        };
+    
     handleChange(e){
         console.log(e);
         this.setState({caseId:e.target.value});
-
     }
-    createCase = async () => {
+
+    // handleTextAreaChange(e){
+    //   console.log(e.target.value);
+    //   this.setState({description:e.target.value});
+    // }
+
+    createCase = async (event) => {
+        event.preventDefault();
         const {contract} = this.state;
     
-        const response1=await contract[0].methods.createCase().send({ from: this.state.accounts[0] });
+        const response1=await contract[0].methods.createCase("Creating a Case").send({ from: this.state.accounts[0] });
 
         const response2=await contract[1].methods.createCase(Number(localStorage.getItem("user")[0]),response1.events.CaseCreated.returnValues[1]).send({ from: this.state.accounts[0] });
+        const response3=await contract[1].methods.appendIntoChain(Number(localStorage.getItem("user")[0]),Number(response1.events.CaseCreated.returnValues[1]),response1.events.CaseCreated.returnValues[1]).send({ from: this.state.accounts[0] });
 
+        console.log(response3);
         this.setState({message:response2});
 
         // console.log(response1);
@@ -29,27 +41,19 @@ export class Createcase extends Component {
     return (
         <div>
         <h1>Create Case</h1>
-          <button onClick={()=>this.createCase()}>Click Here</button>
 
+          <br />
+          <form onSubmit={this.createCase}>
+            {/* <textarea value={this.state.description} onChange={this.handleTextAreaChange}/> */}
+            {/* <br /> */}
+            <button type="submit">Click Here</button>
+          </form>
           <br /><br /><br /><br />
-        
-          {/* {Object.keys(state.message).map(([key,value]) => {
-                return(
-                  <div key={value}>
-                    <h2>
-                      {key}:{value}
-                    </h2>
-                  </div>
-                )
-          })} */}
+
           {Object.keys(this.state.message).length!==0 && Object.keys(this.state.message).length!==3?
           (
             <div>
                 <h1>Case Created</h1> 
-                {/* <div>{Object.keys(this.state.contract.events.CaseCreated()).map((item, i) => (
-                    <div key={i}>{item} : {Object.values(this.state.contract.events.CaseCreated())[i]}</div>
-                ))}
-                </div> */}
             </div>
           ):
           (

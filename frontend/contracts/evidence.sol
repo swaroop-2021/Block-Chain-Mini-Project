@@ -14,6 +14,7 @@ contract Evidence {
    struct Case{
       uint caseId;
       uint noOfDocs;
+      string description;
       mapping(uint => CaseInfo) allDocs;
    }
    
@@ -25,9 +26,10 @@ contract Evidence {
         uint caseId
    );
 
-   function createCase()public{
+   function createCase(string memory _description)public{
       noOfCases++;
       allCases[noOfCases].caseId=noOfCases;
+      allCases[noOfCases].description=_description;
       emit  CaseCreated("Succesfully created a Case",allCases[noOfCases].caseId);
    }
    
@@ -73,21 +75,21 @@ contract Evidence {
    }
 
 
-   function getCaseInfo(uint caseId) public view returns(string memory,uint,CaseInfo[] memory){
+   function getCaseInfo(uint caseId) public view returns(string memory,uint,string memory,CaseInfo[] memory){
       if(caseId!=0 && allCases[caseId].caseId==caseId){
          if(allCases[caseId].noOfDocs==0){
             CaseInfo[] memory M;
-            return("Case Exist but Evidences are not uploaded",caseId,M);
+            return("Case Exist but Evidences are not uploaded",caseId,"",M);
          }
          CaseInfo[] memory m=new CaseInfo[](allCases[caseId].noOfDocs);
          for(uint i = 1; i <=allCases[caseId].noOfDocs; i++) {
                m[i-1] = allCases[caseId].allDocs[i];
          }
-         return("Successfully Fetched",caseId,m);
+         return("Successfully Fetched",caseId,allCases[caseId].description,m);
       }
       else{
          CaseInfo[] memory m;
-         return("Invalid ID",0,m);
+         return("Invalid ID",0,"",m);
       }
    } 
 }

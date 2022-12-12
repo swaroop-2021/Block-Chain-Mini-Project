@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 
 export class Getevidence extends Component {
-    state={...this.props}.state;
+    state={...this.props.state,
+    authMessage:""};
     
     handleChangeCase=(e)=>{
         console.log(e.target.value);
@@ -17,10 +18,18 @@ export class Getevidence extends Component {
     getEvidence = async () => {
       const {contract} = this.state;
 
-      const response = await contract[0].methods.getEvidenceInfo(this.state.caseId,this.state.evidenceId).call();
-      console.log(response);
-
-      this.setState({ message: response});
+      const onChainCases=await contract[1].methods.getOnChainCases(Number(localStorage.getItem("user")[0])).call();
+      console.log(onChainCases);
+      if(onChainCases.includes(this.state.caseId)===true){
+        const response = await contract[0].methods.getEvidenceInfo(this.state.caseId,this.state.evidenceId).call();
+        console.log(response);
+        this.setState({ message: response});
+      }
+      else{
+        console.log("You are not in this Network");
+        this.setState({ authMessage:"You are not in this Network" });
+      }
+      
     };
     render(){return (
       <div>
@@ -34,7 +43,7 @@ export class Getevidence extends Component {
 
         <br /><br /><br /><br />
 
-        {this.state!==null && this.state.message!==null?
+        {this.state!==null && this.state.message.length!==0?
           (
             <>
             
@@ -76,7 +85,7 @@ export class Getevidence extends Component {
           )
           :
           (
-            <p>No response</p>
+            <h4>{this.state.authMessage}</h4>
           )
         }
 

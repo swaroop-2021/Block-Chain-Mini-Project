@@ -63,6 +63,15 @@ contract userStorage {
     function getUserDetails(uint256 _id) public view returns (User memory) {
         return (users[_id]);
     }
+    function getCreatedCases(uint256 _id) public view returns (uint256 [] memory) {
+        return (users[_id].createdCases);
+    }
+    function getOnChainCases(uint256 _id) public view returns (uint256 [] memory) {
+        return (users[_id].onChainCases);
+    }
+    function getOwnershipCases(uint256 _id) public view returns (uint256 [] memory) {
+        return (users[_id].ownershipCases);
+    }
 
     // function readName(uint256 _id) public view returns (string memory) {
     //     if (_id > 0 && users[_id].id == _id) {
@@ -151,7 +160,6 @@ contract userStorage {
                 users[_id].ownershipCases.push(_caseId);
                 users[_id].onChainCases.push(_caseId);
                 emit createCaseInfo("Case added to account");
-                appendIntoChain(_id, _id, _caseId);
             }
         }
     }
